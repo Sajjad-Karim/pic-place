@@ -1,5 +1,6 @@
 import React from "react";
 import HeroSection from "../../components/hero-section/HeroSection";
+import PhotoGallery from "../../components/photo-gallery/PhotoGallery";
 import Wrapper from "../../components/wrapper/Wrapper";
 const Home = () => {
   return (
@@ -7,6 +8,7 @@ const Home = () => {
       <Wrapper>
         <HeroSection />
       </Wrapper>
+      <PhotoGallery />
     </>
   );
 };
