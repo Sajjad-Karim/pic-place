@@ -2,7 +2,7 @@ import React from "react";
 import { IoIosSearch } from "react-icons/io";
 const HeroSection = () => {
   return (
-    <div className="flex justify-start sm:justify-center items-start my-14 mx-auto">
+    <div className="flex justify-start xsm:justify-center items-start my-14 mx-auto">
       <form className=" relative">
         <input
           placeholder="Search you assets... "
