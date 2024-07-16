@@ -1,11 +1,12 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import logo from "../../assets/lo.png";
 const Header = () => {
   return (
-    <nav className="py-3 px-5 flex flex-col items-start font-Ubantu sm:flex-row sm:justify-between shadow-md ">
+    <nav className="py-3 px-5 flex bg-white flex-col items-start font-Ubantu xsm:flex-row xsm:justify-between shadow-md ">
       <div>
-        <Link to={"/"} className="font-bold text-3xl">
-          Pic Place
+        <Link to={"/"}>
+          <img src={logo} alt="Pic Place" className="w-[60px]" />
         </Link>
       </div>
       <ul className=" flex  gap-5 flex-row text-lg tracking-[0.5px] font-normal text-gray-400 ">
