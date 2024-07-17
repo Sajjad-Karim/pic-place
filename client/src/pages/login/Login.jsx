@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 const Login = () => {
   return (
-    <div className="max-w-md mx-auto my-10">
+    <div className="max-w-sm sm:max-w-md mx-auto my-10">
       <form className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
         <div className="mb-4">
           <label
