@@ -1,14 +1,15 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { toast } from "react-hot-toast";
+import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { SignupUser } from "../../features/signup/Actions.signup";
+import { resetSingupState } from "../../features/signup/signup.Slicer";
 const Signup = () => {
   const dispatch = useDispatch();
-  const { isLoading, isRejected, isSuccess, err, data } = useSelector(
+  const { isLoading, isRejected, isSuccess, error, data } = useSelector(
     (state) => state.signup
   );
-  console.log(isLoading, isRejected, err,isSuccess ,data);
-  // console.log(userData);
+  const navigate = useNavigate();
   const [userData, setData] = useState({
     username: "",
     email: "",
@@ -21,14 +22,30 @@ const Signup = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     dispatch(SignupUser(userData));
+    setData({
+      username: "",
+      email: "",
+      password: "",
+      accountType: "",
+    });
   };
+  useEffect(() => {
+    dispatch(resetSingupState());
+    if (isSuccess) {
+      toast.success("Signup successful!");
+      navigate("/login");
+    }
+    if (isRejected) {
+      toast.error(error);
+    }
+  }, [isSuccess, isRejected, error, navigate]);
   return (
     <div className="max-w-md mx-auto my-10">
       <form
         className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
         onSubmit={handleSubmit}
       >
-        <div className="mb-4">
+        <div className="">
           <label
             htmlFor="username"
             className="block text-gray-700 text-sm font-bold mb-2"
@@ -39,11 +56,17 @@ const Signup = () => {
             type="text"
             id="username"
             name="username"
+            value={userData.username}
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             placeholder="Enter username"
             required
             onChange={handleData}
           />
+        </div>
+        <div className="mb-4">
+          <p className="text-red text-sm font-semibold">
+            {isRejected && error}
+          </p>
         </div>
         <div className="mb-4">
           <label
@@ -55,6 +78,7 @@ const Signup = () => {
           <input
             type="email"
             id="email"
+            value={userData.email}
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             placeholder="Enter email"
             name="email"
@@ -75,6 +99,7 @@ const Signup = () => {
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             placeholder="Enter password"
             required
+            value={userData.password}
             name="password"
             onChange={handleData}
           />
@@ -91,6 +116,7 @@ const Signup = () => {
             className="shadow  border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             required
             name="accountType"
+            value={userData.accountType}
             onChange={handleData}
           >
             <option name="accountType" value="buyer" htmlFor="role">
@@ -113,7 +139,7 @@ const Signup = () => {
           className="w-full border bg-bgColor rounded-full py-2 text-lg font-semibold cursor-pointer hover:bg-gray-200"
           type="submit"
         >
-          Sign Up
+          {isLoading ? "Loading..." : "Sign up"}
         </button>
       </form>
     </div>
