@@ -1,6 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { BASE_URL } from "../../http/http";
-
 import axios from "axios";
 export const SignupUser = createAsyncThunk(
   "signupUser",
@@ -9,7 +8,11 @@ export const SignupUser = createAsyncThunk(
       const response = await axios.post(`${BASE_URL}/signup`, data);
       return response.data;
     } catch (error) {
-      return rejectWithValue(error.message);
+      if (error.response && error.response.data.message) {
+        return rejectWithValue(error.response.data.message);
+      } else {
+        return rejectWithValue(error.message);
+      }
     }
   }
 );

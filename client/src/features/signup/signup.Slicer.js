@@ -6,10 +6,18 @@ const signup = createSlice({
     isLoading: false,
     isSuccess: false,
     isRejected: false,
-    erro: null,
-    data: null,
+    error: null,
+    data: {},
   },
-  // reducers: {},
+  reducers: {
+    resetSingupState: (state, action) => {
+      state.isLoading = false;
+      state.isSuccess = false;
+      state.isRejected = false;
+      state.error = null;
+      state.data = null;
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(SignupUser.pending, (state, action) => {
       state.isLoading = true;
@@ -23,11 +31,13 @@ const signup = createSlice({
       state.data = action.payload;
     });
     builder.addCase(SignupUser.rejected, (state, action) => {
+      console.log(action.payload);
       state.isLoading = false;
       state.isSuccess = false;
       state.isRejected = true;
-      state.erro = action.payload;
+      state.error = action.payload;
     });
   },
 });
 export default signup.reducer;
+export const { resetSingupState } = signup.actions;

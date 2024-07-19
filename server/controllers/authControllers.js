@@ -3,7 +3,6 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const { generateAccessToken } = require("../helpers/accessToken");
 const { generateRefreshToken } = require("../helpers/refreshToken");
-
 const signup = async (req, res) => {
   const { username, email, password, accountType } = req.body;
   try {
@@ -24,7 +23,7 @@ const signup = async (req, res) => {
     return res
       .status(200)
       .json({ success: true, message: "User Created Successfully" });
-  } catch (e) {
+  } catch (error) {
     return res.status(500).json({ success: false, message: error.message });
   }
 };
@@ -43,7 +42,6 @@ const login = async (req, res) => {
     if (!user) {
       return res.status(400).json({ success: false, message: "Please Signup" });
     }
-
 
     const comparePassword = await bcrypt.compare(password, user.password);
     if (!comparePassword) {

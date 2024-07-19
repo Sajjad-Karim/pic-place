@@ -6,7 +6,7 @@ function App() {
   return (
     <>
       <ReduxProvider>
-        <Toaster />
+        <Toaster position="top-center" reverseOrder={false} />
         <RouterProvider router={routes} />
       </ReduxProvider>
     </>
