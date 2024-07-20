@@ -22,17 +22,17 @@ const Signup = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     dispatch(SignupUser(userData));
-    setData({
-      username: "",
-      email: "",
-      password: "",
-      accountType: "",
-    });
   };
   useEffect(() => {
     dispatch(resetSingupState());
     if (isSuccess) {
       toast.success("Signup successful!");
+      setData({
+        username: "",
+        email: "",
+        password: "",
+        accountType: "",
+      });
       navigate("/login");
     }
     if (isRejected) {

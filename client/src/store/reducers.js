@@ -1,5 +1,10 @@
 import { combineReducers } from "@reduxjs/toolkit";
-import signupSlicer from "../features/signup/signup.Slicer";
-export const reducers = combineReducers({
-  signup: signupSlicer,
+import authReducer from "../features/auth/auth.Slicer";
+import signupReducer from "../features/signup/signup.Slicer";
+
+const rootReducer = combineReducers({
+  auth: authReducer,
+  signup: signupReducer,
 });
+
+export default rootReducer;
