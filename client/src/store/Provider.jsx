@@ -1,8 +1,8 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { Provider } from "react-redux";
-import { reducers } from "./reducers";
+import rootReducer from "./reducers";
 const store = configureStore({
-  reducer: reducers,
+  reducer: rootReducer,
 });
 export const ReduxProvider = ({ children }) => {
   return <Provider store={store}>{children}</Provider>;
