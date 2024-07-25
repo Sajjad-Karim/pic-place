@@ -1,9 +1,17 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import logo from "../../assets/lo.png";
 const Header = () => {
+  const { pathname } = useLocation();
+
   return (
-    <nav className="py-3 px-5 flex bg-white flex-col items-start font-Ubantu xsm:flex-row xsm:justify-between shadow-md ">
+    <nav
+      className={`py-3 px-5 flex ${
+        pathname === "/seller/profile" || pathname === "/buyer/profile"
+          ? "hidden"
+          : "none"
+      } bg-white flex-col items-start font-Ubantu xsm:flex-row xsm:justify-between shadow-md `}
+    >
       <div>
         <Link to={"/"}>
           <img src={logo} alt="Pic Place" className="w-[60px]" />
