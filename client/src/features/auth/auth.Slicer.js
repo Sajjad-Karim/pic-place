@@ -1,57 +1,67 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, isPending } from "@reduxjs/toolkit";
 import { loginUser } from "./authActions";
-const accessToken = localStorage.getItem("userToken")
-  ? localStorage.getItem("userToken")
+const acessToken = localStorage.getItem("accessToken")
+  ? localStorage.getItem("accessToken")
   : null;
-const initialState = {
-  isLoading: false,
-  isSuccess: false,
-  isRejected: false,
-  data: null,
-  error: null,
-  accessToken,
-};
+const refreshToken = localStorage.getItem("refreshToken")
+  ? localStorage.getItem("refreshToken")
+  : null;
+const author = localStorage.getItem("author")
+  ? localStorage.getItem("author")
+  : null;
+const role = localStorage.getItem("role") ? localStorage.getItem("role") : null;
 
-const authSlice = createSlice({
+const auth = createSlice({
   name: "auth",
-  initialState,
+  initialState: {
+    isPending: false,
+    isAuthenticated: false, //This case is for the fullfiled
+    isRejected: false,
+    user: null,
+    error: null,
+    acessToken,
+    refreshToken,
+    role,
+    author,
+  },
   reducers: {
-    logoutUser: (state) => {
-      state.isLoading = false;
-      state.isSuccess = false;
+    logout: (state, action) => {
+      state.acessToken = null;
+      state.refreshToken = null;
+      state.role = null;
+      state.author = null;
+      state.user = null;
+      state.isPending = false;
       state.isRejected = false;
-      state.data = null;
-      state.error = null;
-      state.accessToken = null;
+      state.isAuthenticated = false;
+      localStorage.removeItem("accessToken");
+      localStorage.removeItem("refreshToken");
+      localStorage.removeItem("role");
+      localStorage.removeItem("author");
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(loginUser.pending, (state) => {
-      state.isLoading = true;
-      state.error = null;
-      state.isSuccess = false;
-      state.data = null;
-      state.accessToken = null;
+    builder.addCase(loginUser.pending, (state, action) => {
+      state.isPending = true;
+      state.isAuthenticated = false;
       state.isRejected = false;
     });
     builder.addCase(loginUser.fulfilled, (state, action) => {
-      state.isLoading = false;
-      state.isSuccess = true;
-      state.error = null;
-      state.data = action.payload;
-      state.accessToken = action.payload.accessToken;
-      state.isRejected = false;
+      state.isPending = false;
+      state.isAuthenticated = true;
+      state.user = action.payload;
+      state.jwtToken = action.payload.accessToken;
+      state.refreshToken = action.payload.refreshToken;
+      state.role = action.payload.role;
+      state.author = action.payload.author;
     });
     builder.addCase(loginUser.rejected, (state, action) => {
-      state.isLoading = false;
-      state.isSuccess = false;
-      state.error = action.payload;
-      state.data = null;
-      state.accessToken = null;
+      state.isPending = false;
+      state.isAuthenticated = false;
       state.isRejected = true;
+      state.error = action.payload;
     });
   },
 });
-
-export default authSlice.reducer;
-export const { logoutUser } = authSlice.actions;
+export default auth.reducer;
+export const { logout } = auth.actions;

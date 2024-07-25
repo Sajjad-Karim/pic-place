@@ -6,6 +6,7 @@ export default {
       red: "#ef4444",
       white: "#ffff",
       bgColor: "#f7f7f7",
+      black: "#000000",
       gray: {
         50: "#F9FAFB",
         100: "#F3F4F6",

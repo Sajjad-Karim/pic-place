@@ -1,50 +1,47 @@
 import React, { useEffect, useState } from "react";
-import { loginUser } from "../../features/auth/authActions";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
-
+import { useNavigate } from "react-router-dom";
+import { loginUser } from "../../features/auth/authActions";
 import toast from "react-hot-toast";
-import { logoutUser } from "../../features/auth/auth.Slicer";
+// import { resetState } from "../../features/auth/auth.Slicer";
 const Login = () => {
   const [loginData, setLoginData] = useState({
     email: "",
     password: "",
   });
+  const {
+    isPending,
+    isAuthenticated,
+    isRejected,
+    jwtToken,
+    refreshToken,
+    user,
+    error,
+  } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { accessToken, data, error, isLoading, isRejected, isSuccess } =
-    useSelector((state) => state.auth);
-  // const data = useSelector((state) => state.auth);
   const handleLogin = (e) => {
     setLoginData({ ...loginData, [e.target.name]: e.target.value });
   };
-
   const handleSubmit = (e) => {
     e.preventDefault();
     dispatch(loginUser(loginData));
   };
-  console.log();
   useEffect(() => {
-    if (isSuccess) {
-      toast.success("success fully login");
+    if (error) {
+      toast.error(error);
+    }
+    if (isAuthenticated) {
+      toast.success(user.message);
       setLoginData({
         email: "",
         password: "",
       });
-      navigate(`/${data.role}/profile`);
-      dispatch(logoutUser());
+      navigate(`/${user.role}/profile`); //here role may be seller or buyer
+      // dispatch(resetState()); //clear error state after successful login
     }
-    if (error) {
-      toast.error(error);
-    }
-  }, [navigate, data, error]);
-  // console.log(data);
-  // console.log(`Access Token : ${accessToken}`);
-  // console.log(`Data : ${data}`);
-  // console.log(`Error : ${error}`);
-  // console.log(`Is Loading : ${isLoading}`);
-  // console.log(`Is Rejected : ${isRejected}`);
-  // console.log(`Is Success : ${isSuccess}`);
+  }, [isAuthenticated, user, error, navigate]);
+
   return (
     <div className="max-w-sm sm:max-w-md mx-auto my-10">
       <form
@@ -92,7 +89,7 @@ const Login = () => {
           className="w-full border bg-bgColor rounded-full py-2 text-lg font-semibold cursor-pointer hover:bg-gray-200"
           type="submit"
         >
-          Sign In
+          {isPending ? "Please wait" : ` Sign In`}
         </button>
       </form>
     </div>
@@ -100,3 +97,4 @@ const Login = () => {
 };
 
 export default Login;
+//

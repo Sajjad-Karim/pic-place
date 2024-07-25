@@ -38,7 +38,7 @@ export const routes = createBrowserRouter([
         element: <SellerDashboard />,
       },
       {
-        path: "/buyer/dashboard",
+        path: "/buyer/profile",
         element: <BuyerDashboard />,
       },
     ],
